@@ -18,8 +18,11 @@ class DatabaseSeeder extends Seeder {
         //     'email' => 'test@example.com',
         // ]);
         $this->call([
-            RoleSeeder::class,
-            UsersSeeder::class,
+             RoleSeeder::class,
+            UsersSeeder::class, 
+            MtsfPrioritiesSeeder::class,
+            SpScorecardsSeeder::class,
+            OutcomesSeeder::class
         ]);
     }
 }

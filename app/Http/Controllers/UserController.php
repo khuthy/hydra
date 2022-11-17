@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use App\Traits\HttpResponses;
 use App\Models\Role;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -9,6 +9,9 @@ use Illuminate\Support\Facades\Hash;
 use Laravel\Sanctum\Exceptions\MissingAbilityException;
 
 class UserController extends Controller {
+
+
+    use HttpResponses;
     /**
      * Display a listing of the resource.
      *
@@ -33,7 +36,7 @@ class UserController extends Controller {
 
         $user = User::where('email', $creds['email'])->first();
         if ($user) {
-            return response(['error' => 1, 'message' => 'user already exists'], 409);
+            return $this->error('', 'user already exists', 409);
         }
 
         $user = User::create([
@@ -62,7 +65,7 @@ class UserController extends Controller {
 
         $user = User::where('email', $creds['email'])->first();
         if (! $user || ! Hash::check($request->password, $user->password)) {
-            return response(['error' => 1, 'message' => 'invalid credentials'], 401);
+            return $this->error('', 'Invalid Credentials provided.', 409);
         }
 
         if (config('hydra.delete_previous_access_tokens_on_login', false)) {
@@ -73,7 +76,11 @@ class UserController extends Controller {
 
         $plainTextToken = $user->createToken('hydra-api-token', $roles)->plainTextToken;
 
-        return response(['error' => 0, 'id' => $user->id, 'token' => $plainTextToken], 200);
+
+        return $this->success([
+            'user' => $user,
+            'token' =>  $plainTextToken
+        ]);
     }
 
     /**

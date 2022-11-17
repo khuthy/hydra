@@ -4,8 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Models\Role;
 use Illuminate\Http\Request;
+use App\Traits\HttpResponses;
 
 class RoleController extends Controller {
+
+    use HttpResponses;
     /**
      * Display a listing of the resource.
      *
@@ -38,7 +41,7 @@ class RoleController extends Controller {
             return $role;
         }
 
-        return response(['error' => 1, 'message' => 'role already exists'], 409);
+        return $this->error('', 'role already exists', 409);
     }
 
     /**
@@ -60,7 +63,8 @@ class RoleController extends Controller {
      */
     public function update(Request $request, Role $role = null) {
         if (! $role) {
-            return response(['error' => 1, 'message' => 'role doesn\'t exist'], 404);
+
+            return $this->error('', 'role doesn\'t exist', 404);
         }
 
         $role->name = $request->name ?? $role->name;
