@@ -154,4 +154,8 @@ class UserController extends Controller {
     public function me(Request $request) {
         return $request->user();
     }
+
+    public function logout(Request $request) {
+       return $request->user()->tokens()->delete();
+    }
 }

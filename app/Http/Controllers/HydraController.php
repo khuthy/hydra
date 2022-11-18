@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 class HydraController extends Controller {
     public function hydra() {
         return response([
-            'message' => 'Welcome to Hydra, the zero config API boilerplate with roles and abilities for Laravel Sanctum. Please visit https://hasinhayder.github.io/hydra to know more.',
+            'message' => 'Welcome to Scorecard System. The main purpose of this Scorecard System is to chart the way for the development of a CS System that integrates with the Corporate Performance Management System of the CGS. ',
         ]);
     }
 

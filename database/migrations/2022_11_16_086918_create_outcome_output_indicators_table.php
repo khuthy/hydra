@@ -15,25 +15,25 @@ return new class extends Migration
     {
         Schema::create('outcome_output_indicators', function (Blueprint $table) {
             $table->id();
-            $table->string('indicator_type');
-            $table->string('indicator_title');
-            $table->string('indicator_definition');
-            $table->string('source_of_data');
-            $table->string('method_of_calculation');
-            $table->string('Means of verification')->nullable();
+            $table->string('indicator_type')->nullable();
+            $table->string('indicator_title')->nullable();
+            $table->string('indicator_definition')->nullable();
+            $table->string('source_of_data')->nullable();
+            $table->string('method_of_calculation')->nullable();
+            $table->string('means_of_verification')->nullable();
 
             // calculation variables and constant values
 
 
-            $table->string('assumptions');
+            $table->string('assumptions')->nullable();
 
-            $table->string('disagregation_of_benefitiaries');
-            $table->string('spatial_transformation');
+            $table->string('disagregation_of_benefitiaries')->nullable();
+            $table->string('spatial_transformation')->nullable();
             $table->string('calculation_type')->nullable();
             $table->string('reporting_cycle')->nullable();
 
-            $table->string('desired_performance');
-            $table->string('indicator_responsibility');
+            $table->string('desired_performance')->nullable();
+            $table->string('indicator_responsibility')->nullable();
             $table->timestamps();
         });
     }

@@ -10,12 +10,16 @@ class Outcomes extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'outcome_name'
+    ];
+
        /**
      * @return HasMany
      * @description get all posts for the category
      */
-    public function Outcomes_SpOutcomeIndicators(): BelongsTo
+    public function spOutcomeIndicators()
     {
-        return $this->hasMany(SpOutcomeIndicators::class);
+        return $this->hasMany(SpOutcomeIndicators::class, 'outcome_id');
     }
 }

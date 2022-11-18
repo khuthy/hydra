@@ -3,9 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Outcomes;
-use App\Http\Requests\StoreOutcomesRequest;
-use App\Http\Requests\UpdateOutcomesRequest;
-
+use Illuminate\Http\Request;
+use App\Traits\HttpResponses;
 class OutcomesController extends Controller
 {
     use HttpResponses;
@@ -16,62 +15,45 @@ class OutcomesController extends Controller
      */
     public function index()
     {
-        //
+       return Outcomes::with('spOutcomeIndicators')->get();
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
+    public function store(Request $request)
     {
-        //
+        $data = $request->validate([
+            'outcome_name' => 'required | string',
+        ]);
+        $existing = Outcomes::where('outcome_name', $data['outcome_name'])->first();
+
+        if (! $existing) {
+            $Outcomes = Outcomes::create([
+                'outcome_name' => $data['outcome_name'],
+            ]);
+
+            return $Outcomes;
+        }
+
+        return $this->error('', 'perspective description already exists', 409);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \App\Http\Requests\StoreOutcomesRequest  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(StoreOutcomesRequest $request)
+    public function show(Outcomes $outcome)
     {
-        //
+        return $outcome->with('spOutcomeIndicators')->find($outcome)->first();
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Outcomes  $outcomes
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Outcomes $outcomes)
-    {
-        //
-    }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Outcomes  $outcomes
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Outcomes $outcomes)
+    public function update(Request $request, Outcomes $outcome)
     {
-        //
-    }
+        if (! $outcome) {
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \App\Http\Requests\UpdateOutcomesRequest  $request
-     * @param  \App\Models\Outcomes  $outcomes
-     * @return \Illuminate\Http\Response
-     */
-    public function update(UpdateOutcomesRequest $request, Outcomes $outcomes)
-    {
-        //
+            return $this->error('', 'outcome name doesn\'t exist', 404);
+        }
+
+        $outcome->outcome_name = $request->outcome_name ?? $outcome->outcome_name;
+
+        $outcome->update();
+
+        return response(['error' => 0, 'message' => 'outcome name has been updated successfully', 'data' =>  $outcome]);
     }
 
     /**
@@ -80,8 +62,10 @@ class OutcomesController extends Controller
      * @param  \App\Models\Outcomes  $outcomes
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Outcomes $outcomes)
+    public function destroy(Outcomes $outcome)
     {
-        //
+        $outcome->delete();
+
+        return response(['error' => 0, 'message' => 'outcome has been deleted']);
     }
 }

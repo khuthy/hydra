@@ -3,84 +3,73 @@
 namespace App\Http\Controllers;
 
 use App\Models\CorporateScorecards;
-use App\Http\Requests\StoreCorporateScorecardsRequest;
-use App\Http\Requests\UpdateCorporateScorecardsRequest;
+
+use Illuminate\Http\Request;
+use App\Traits\HttpResponses;
 
 class CorporateScorecardsController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+
     public function index()
     {
         return CorporateScorecards::with('spscorecard')->get();
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
+
+    public function store(Request $request)
     {
-        //
+        $data = $request->validate([
+            'corporate_scorecard_type' =>'required',
+            'app_aop_year' =>'required',
+            'sp_scorecard_id' =>'required',
+        ]);
+        $existing = CorporateScorecards::where('app_aop_year', $data['app_aop_year'])->first();
+
+        if (! $existing) {
+            $CorporateScorecards = CorporateScorecards::create([
+                'corporate_scorecard_type' => $data['corporate_scorecard_type'],
+                'app_aop_year' => $data['app_aop_year'],
+                'sp_scorecard_id' => $data['sp_scorecard_id'],
+            ]);
+
+            return $CorporateScorecards;
+        }
+
+        return $this->error('', 'Corporate Scorecards already exists', 409);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \App\Http\Requests\StoreCorporateScorecardsRequest  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(StoreCorporateScorecardsRequest $request)
+
+    public function show(CorporateScorecards $corporatescorecard)
     {
-        //
+        return $corporatescorecard->with('spscorecard')->find($corporatescorecard)->first();
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\CorporateScorecards  $corporateScorecards
-     * @return \Illuminate\Http\Response
-     */
-    public function show(CorporateScorecards $corporateScorecards)
+
+    public function update(Request $request, CorporateScorecards $corporatescorecard)
     {
-        //
+        if (! $corporatescorecard) {
+
+            return $this->error('', 'departments doesn\'t exist', 404);
+        }
+
+
+
+        $corporatescorecard->corporate_scorecard_type = $request->corporate_scorecard_type ?? $corporatescorecard->corporate_scorecard_type;
+
+        $corporatescorecard->app_aop_year = $request->app_aop_year ?? $corporatescorecard->app_aop_year;
+
+        $corporatescorecard->sp_scorecard_id = $request->sp_scorecard_id ?? $corporatescorecard->sp_scorecard_id;
+
+        $corporatescorecard->update();
+
+        return response(['error' => 0, 'message' => 'corporate scorecard has been updated successfully', 'data' =>  $corporatescorecard]);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\CorporateScorecards  $corporateScorecards
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(CorporateScorecards $corporateScorecards)
-    {
-        //
-    }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \App\Http\Requests\UpdateCorporateScorecardsRequest  $request
-     * @param  \App\Models\CorporateScorecards  $corporateScorecards
-     * @return \Illuminate\Http\Response
-     */
-    public function update(UpdateCorporateScorecardsRequest $request, CorporateScorecards $corporateScorecards)
+    public function destroy(CorporateScorecards $corporatescorecard)
     {
-        //
-    }
+        $corporatescorecard->delete();
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\CorporateScorecards  $corporateScorecards
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(CorporateScorecards $corporateScorecards)
-    {
-        //
+        return response(['error' => 0, 'message' => 'corporate scorecard has been deleted']);
     }
 }

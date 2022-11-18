@@ -11,7 +11,12 @@ class CorporateScorecards extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'corporate_scorecard_type',
+        'app_aop_year',
+        'sp_scorecard_id',
 
+    ];
 
    /**
      * @return BelongsTo

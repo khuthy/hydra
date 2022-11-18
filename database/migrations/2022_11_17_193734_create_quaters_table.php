@@ -13,13 +13,14 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('programmes', function (Blueprint $table) {
+        Schema::create('quaters', function (Blueprint $table) {
             $table->id();
-            $table->string('programme_name');
-            $table->string('institutional_outcome');
-            $table->string('programme_description');
-            $table->foreignId('perspective_id')->constrained('perspectives')->onUpdate('cascade')->onDelete('cascade');
+            $table->string('expected_results');
+            $table->string('actual_results');
+            $table->string('quater_name')->default('Q1');
+            $table->foreignId('corporate_scorecard_indicator_id')->constrained('corporate_scorecard_indicators')->onUpdate('cascade')->onDelete('cascade');
             $table->timestamps();
+
         });
     }
 
@@ -30,6 +31,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('programmes');
+        Schema::dropIfExists('quaters');
     }
 };

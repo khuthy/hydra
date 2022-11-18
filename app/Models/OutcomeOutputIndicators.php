@@ -10,12 +10,26 @@ class OutcomeOutputIndicators extends Model
 {
     use HasFactory;
 
-          /**
-     * @return HasMany
-     * @description get all posts for the category
-     */
-    public function CorporateScorecardIndicators(): BelongsTo
+
+    protected $fillable = [
+        'indicator_type',
+        'indicator_title',
+        'indicator_definition',
+        'source_of_data',
+        'method_of_calculation',
+        'means_of_verification',
+        'assumptions',
+        'disagregation_of_benefitiaries',
+        'spatial_transformation',
+        'calculation_type',
+        'reporting_cycle',
+        'desired_performance',
+        'indicator_responsibility',
+    ];
+
+
+    public function corporateScorecardIndicator()
     {
-        return $this->hasMany(CorporateScorecardIndicators::class);
+        return $this->hasMany(CorporateScorecardIndicators::class, 'ooi_id');
     }
 }

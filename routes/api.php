@@ -35,7 +35,7 @@ use Illuminate\Support\Facades\Route;
 
 //use the middleware 'hydra.log' with any request to get the detailed headers, request parameters and response logged in logs/laravel.log
 
-Route::get('hydra', [HydraController::class, 'hydra']);
+Route::get('main', [HydraController::class, 'hydra']);
 Route::get('hydra/version', [HydraController::class, 'version']);
 
 Route::apiResource('users', UserController::class)->except(['edit', 'create', 'store', 'update'])->middleware(['auth:sanctum', 'ability:admin,super-admin']);
@@ -51,6 +51,9 @@ Route::patch('users/{user}', [UserController::class, 'update'])->middleware(['au
 Route::get('userinfo ', [UserController::class, 'me'])->middleware('auth:sanctum');
 
 Route::post('login', [UserController::class, 'login']);
+
+Route::post('logout',[UserController::class, 'logout'])->middleware(['auth:sanctum']);
+
 
 Route::apiResource('roles', RoleController::class)->except(['create', 'edit'])->middleware(['auth:sanctum', 'ability:admin,super-admin,user']);
 
@@ -79,3 +82,5 @@ Route::apiResource('corporatescorecards', CorporateScorecardsController::class)-
 
 /*  Corporate Scorecards indicators */
 Route::apiResource('corporatescorecardindicators', CorporateScorecardIndicatorsController::class)->except(['create', 'edit'])->middleware(['auth:sanctum', 'ability:admin,super-admin,user']);
+/* Quarters */
+Route::apiResource('quarters', QuaterController::class)->except(['create', 'edit'])->middleware(['auth:sanctum', 'ability:admin,super-admin,user']);
