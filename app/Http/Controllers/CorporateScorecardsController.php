@@ -9,6 +9,7 @@ use App\Traits\HttpResponses;
 
 class CorporateScorecardsController extends Controller
 {
+    use HttpResponses;
 
     public function index()
     {

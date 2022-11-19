@@ -34,7 +34,7 @@ class CorporateScorecardIndicators extends Model
 
     public function outcomeoutputindicator()
     {
-        return $this->belongsTo(OutcomeOutputIndicators::class, 'ooi_id');
+        return $this->belongsTo(Indicators::class, 'ooi_id');
     }
 
     public function quater()

@@ -6,9 +6,12 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
-class OutcomeOutputIndicators extends Model
+class Indicators extends Model
 {
     use HasFactory;
+
+
+    protected $table = "outcome_output_indicators";
 
 
     protected $fillable = [

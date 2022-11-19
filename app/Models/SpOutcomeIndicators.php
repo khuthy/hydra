@@ -31,7 +31,7 @@ class SpOutcomeIndicators extends Model
 
     public function outcomeoutputindicator()
     {
-        return $this->belongsTo(OutcomeOutputIndicators::class, 'outcome_output_indicator_id');
+        return $this->belongsTo(Indicators::class, 'outcome_output_indicator_id');
     }
 
     public function outcome()

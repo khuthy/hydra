@@ -11,7 +11,7 @@ use App\Http\Controllers\SpOutcomeIndicatorsController;
 use App\Http\Controllers\ProgrammesController;
 use App\Http\Controllers\PerspectivesController;
 use App\Http\Controllers\OutcomesController;
-use App\Http\Controllers\OutcomeOutputIndicatorsController;
+use App\Http\Controllers\IndicatorsController;
 use App\Http\Controllers\MtsfPrioritiesController;
 use App\Http\Controllers\DepartmentsController;
 
@@ -71,7 +71,7 @@ Route::apiResource('perspectives', PerspectivesController::class)->except(['crea
 /* outcomes */
 Route::apiResource('outcomes', OutcomesController::class)->except(['create', 'edit'])->middleware(['auth:sanctum', 'ability:admin,super-admin,user']);
 /* outcomes output indicators */
-Route::apiResource('outcomesoutputindicators', OutcomeOutputIndicatorsController::class)->except(['create', 'edit'])->middleware(['auth:sanctum', 'ability:admin,super-admin,user']);
+Route::apiResource('indicators', IndicatorsController::class)->except(['create', 'edit'])->middleware(['auth:sanctum', 'ability:admin,super-admin,user']);
 
 /* mtsf priorities */
 Route::apiResource('priorities', MtsfPrioritiesController::class)->except(['create', 'edit'])->middleware(['auth:sanctum', 'ability:admin,super-admin,user']);
